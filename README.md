@@ -1,13 +1,13 @@
 # Dijkstra et routage Link-State
 
 Projet de réseau en Python, utilisable avec Docker sans installer Python.
-Le programme s'utilise dans un terminal : il n'y a pas de page web à ouvrir.
+V1/V2/V3 restent disponibles en terminal. La **V3 graphique** s'ouvre aussi dans votre navigateur.
 
 | Version | Ce que l'on teste |
 | --- | --- |
 | **V1** | Plus courts chemins avec Dijkstra, arbres et tables de routage de tous les routeurs. |
 | **V2** | Chargement JSON, calcul d'un chemin, modification de coûts, diagnostic et exports. |
-| **V3** | Diffusion des annonces Link-State, pannes, ECMP, partition et reconnexion. |
+| **V3** | Simulation Link-State en terminal ou en graphique : routeurs, coûts, interfaces fictives, pannes et ECMP. |
 
 ## 1. Préparer le projet
 
@@ -39,6 +39,48 @@ docker compose build v1
 Une seule image est utilisée par les quatre services. La première construction
 peut télécharger l'image Python. Après modification du code, refaire la commande
 `docker compose build v1`.
+
+## V3 graphique : démarrage rapide
+
+Depuis le dossier du projet dans Ubuntu WSL :
+
+```bash
+cd ~/dijkstra-link-state
+docker compose up --build v3-web
+```
+
+Ouvrir **http://localhost:8080** dans un navigateur Windows ou Linux.
+Pour l'arrêter : `Ctrl+C`. Pour la lancer en arrière-plan :
+`docker compose up -d --build v3-web` ; pour l'arrêter ensuite :
+`docker compose stop v3-web`.
+
+1. Les **routeurs**, **liaisons**, **coûts** et **interfaces fictives** s'affichent immédiatement.
+2. Cliquer sur **Converger** pour diffuser les LSA et construire les tables.
+3. Choisir la source/destination ou cliquer sur un routeur pour l'inspecter.
+4. Les onglets **Routage**, **Interfaces** et **LSDB** montrent son état local.
+5. Sélectionner un lien, le couper ou modifier son coût, puis lancer la convergence.
+6. **Un événement** ou **Lecture auto** permet d'observer la propagation progressivement.
+
+Les interfaces `Gi0/0`, `Gi0/1`… sont des noms pédagogiques attribués à chaque
+extrémité ; elles ne correspondent pas à des interfaces de votre ordinateur.
+Elles conservent leur nom quand une liaison est coupée puis rétablie.
+Une liaison coupée reste dessinée en pointillés rouges. Le chemin sélectionné
+est vert, l'arbre SPF bleu. **Exporter le SVG** enregistre le dessin.
+
+Le menu Topologie permet aussi d'essayer le losange ECMP ou la partition.
+Changer de topologie ou réinitialiser repart avant diffusion, avec les coûts d'origine.
+L'état est partagé entre les onglets et reste en mémoire jusqu'à l'arrêt du serveur.
+Rafraîchir la page pour relire les changements effectués depuis un autre onglet.
+Le journal affiché est une fenêtre sur les 30 derniers événements.
+
+Si le port 8080 est déjà utilisé :
+
+```bash
+WEB_PORT=8081 docker compose up --build v3-web
+```
+
+Ouvrir alors http://localhost:8081. En Python sans Docker :
+`python3 -m dijkstra.v3 --web`.
 
 ## 2. Lancer chaque version
 
@@ -114,7 +156,7 @@ La V3 est un simulateur pédagogique : aucun paquet réseau réel n'est envoyé.
 docker compose run --rm tests
 ```
 
-La suite doit se terminer par **`Ran 42 tests`** puis **`OK`**.
+La suite doit se terminer par **`Ran 53 tests`** puis **`OK`**.
 Un échec fait retourner un code non nul. Les tests couvrent les chemins,
 les premiers sauts, les exports, les annonces, les pannes et la reconvergence.
 
@@ -129,7 +171,7 @@ docker compose run --rm v3 dijkstra.v3 --help
 - **Permission refusée dans outputs/** : utiliser votre UID/GID dans le terminal WSL :
   `export LOCAL_UID=$(id -u) LOCAL_GID=$(id -g)`, puis relancer la commande.
 - **Version du code ancienne** : refaire `docker compose build v1`.
-- **Aucun serveur dans le navigateur** : c'est normal, toutes les versions sont des programmes en terminal.
+- **La page ne répond pas** : utiliser le service `v3-web` ci-dessus ; `docker compose run --rm v3` lance la version terminal.
 
 Sans Docker, depuis la racine avec Python 3.11+ : `python3 -m dijkstra.v1`,
 `python3 -m dijkstra.v2`, `python3 -m dijkstra.v3 --demo` ou

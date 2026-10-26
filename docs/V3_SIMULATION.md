@@ -102,3 +102,8 @@ séquence et contenu différent est également rejetée ; aucun traitement de
 conflit, de checksum ou de bouclage de séquence n'est simulé.
 La restauration échange des bases complètes dans un mécanisme pédagogique
 plus simple que l'échange OSPF. La mémoire conserve le journal complet.
+
+## Interface graphique
+
+La V3 propose aussi `python -m dijkstra.v3 --web` ou le service Docker `v3-web`.
+Voir [V3_GRAPHIQUE.md](V3_GRAPHIQUE.md) pour les coûts et interfaces sur le graphe.

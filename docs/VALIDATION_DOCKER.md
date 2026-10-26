@@ -12,3 +12,18 @@ Les sorties détaillées sont conservées localement sous `outputs/docker-verifi
 (dossier ignoré par Git). Les commandes sans terminal utilisent `-T` pour la
 vérification automatisée ; dans un terminal, les exemples du README restent interactifs.
 L'image Python officielle est figée par son empreinte SHA-256 dans le Dockerfile.
+
+## Ajout graphique V3
+
+53 tests réussis dans Docker après ajout de la V3 graphique.
+Le mode `--web` conserve les mêmes algorithmes V1/V2/V3.
+
+Vérification navigateur de la V3 graphique :
+- Réseau de référence convergé : R1 → R2 → R4 → R5, coût 5.
+- Coupure R2–R4 : lien rouge pointillé, détour R1 → R2 → R3 → R4 → R5, coût 7.
+- Rétablissement : retour du coût 5 ; noms d'interfaces conservés.
+- Coût 0 : message d'erreur, aucune modification du réseau.
+- Losange ECMP : R4 au coût 2, premiers sauts R2 et R3.
+- Export SVG téléchargé et relu comme XML ; aucune erreur console navigateur.
+- Disposition vérifiée à 375 px, sans débordement horizontal de la page.
+- Les vérifications ont utilisé une instance séparée, sans réinitialiser la session de l'utilisateur.

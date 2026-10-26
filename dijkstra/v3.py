@@ -140,8 +140,19 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--journal", action="store_true", help="Afficher tout le journal")
     parser.add_argument("--lsdb", action="store_true", help="Afficher les annonces locales")
     parser.add_argument("--export", metavar="DOSSIER", help="Exporter journal, LSDB, tables et convergence")
+    parser.add_argument("--web", action="store_true", help="Interface graphique locale dans le navigateur")
+    parser.add_argument("--host", default="127.0.0.1", help="Adresse du serveur graphique")
+    parser.add_argument("--port", type=int, default=8080, help="Port de l'interface graphique")
     args = parser.parse_args(argv)
     try:
+        if args.web:
+            if args.demo or args.scenario or args.interactive or args.steps is not None or args.fail or args.restore or args.cost or args.isolate or args.until_convergence or args.export or args.journal or args.lsdb:
+                raise ValueError("--web s'utilise avec --topology, --host et --port uniquement.")
+            if not 1 <= args.port <= 65535:
+                raise ValueError("Le port doit être compris entre 1 et 65535.")
+            from .visual.server import serve
+            serve(args.topology, args.host, args.port)
+            return 0
         if args.steps is not None and args.steps < 0:
             raise ValueError("--steps doit être positif ou nul.")
         if args.demo:
@@ -187,7 +198,7 @@ def main(argv: list[str] | None = None) -> int:
             show_journal(simulator)
         if args.export:
             simulator.export(args.export)
-    except (ValueError, RuntimeError, TypeError, OverflowError) as error:
+    except (ValueError, RuntimeError, TypeError, OverflowError, OSError) as error:
         parser.exit(2, f"Erreur : {error}\n")
     return 0
 

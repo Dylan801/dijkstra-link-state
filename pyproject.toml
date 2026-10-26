@@ -16,3 +16,6 @@ dijkstra-v3 = "dijkstra.v3:main"
 
 [tool.setuptools.packages.find]
 include = ["dijkstra*"]
+
+[tool.setuptools.package-data]
+"dijkstra.visual" = ["static/*.html", "static/*.css", "static/*.js"]

@@ -23,3 +23,23 @@ jobs:
           docker compose run --rm -T v1
           docker compose run --rm -T v2
           docker compose run --rm -T v3
+      - name: Vérifier le serveur graphique
+        run: |
+          docker compose up -d v3-web
+          python3 - <<'PY'
+          import json, time, urllib.request
+          for attempt in range(30):
+              try:
+                  with urllib.request.urlopen('http://localhost:8080/api/state', timeout=2) as response:
+                      state = json.load(response)
+                  assert len(state['routers']) == 6
+                  assert state['links'][0]['source_interface'] == 'Gi0/0'
+                  break
+              except OSError:
+                  time.sleep(1)
+          else:
+              raise SystemExit('Serveur graphique indisponible')
+          PY
+      - name: Arrêter le serveur graphique
+        if: always()
+        run: docker compose stop v3-web
