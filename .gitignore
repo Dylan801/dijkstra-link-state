@@ -5,3 +5,6 @@ __pycache__/
 *.log
 outputs/*
 !outputs/.gitkeep
+
+cloudflare/dist/
+cloudflare/.runtime-cache/
