@@ -1,0 +1,17 @@
+{
+  "name": "B : chemin alternatif",
+  "topology": "../data/topologie_ecmp.json",
+  "actions": [
+    {
+      "operation": "run"
+    },
+    {
+      "operation": "fail",
+      "source": "R1",
+      "target": "R2"
+    },
+    {
+      "operation": "run"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+name: Tests Docker
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le projet
+        uses: actions/checkout@v4
+      - name: Construire l'image
+        run: docker compose build v1
+      - name: Exécuter les tests
+        run: docker compose run --rm -T tests
+      - name: Vérifier les trois versions
+        run: |
+          docker compose run --rm -T v1
+          docker compose run --rm -T v2
+          docker compose run --rm -T v3

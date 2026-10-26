@@ -1,0 +1,14 @@
+.git
+.github
+.venv
+__pycache__
+**/__pycache__
+*.py[cod]
+outputs
+docs
+README.md
+run.ps1
+.env
+.env.*
+*.log
+work

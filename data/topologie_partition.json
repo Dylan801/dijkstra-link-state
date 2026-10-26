@@ -1,0 +1,25 @@
+{
+  "routers": [
+    "A",
+    "B",
+    "C",
+    "D"
+  ],
+  "links": [
+    {
+      "source": "A",
+      "target": "B",
+      "cost": 1
+    },
+    {
+      "source": "B",
+      "target": "C",
+      "cost": 1
+    },
+    {
+      "source": "C",
+      "target": "D",
+      "cost": 1
+    }
+  ]
+}

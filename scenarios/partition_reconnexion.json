@@ -1,0 +1,35 @@
+{
+  "name": "D : partition et reconnexion",
+  "topology": "../data/topologie_partition.json",
+  "actions": [
+    {
+      "operation": "run"
+    },
+    {
+      "operation": "fail",
+      "source": "B",
+      "target": "C"
+    },
+    {
+      "operation": "run"
+    },
+    {
+      "operation": "cost",
+      "source": "C",
+      "target": "D",
+      "cost": 2
+    },
+    {
+      "operation": "run"
+    },
+    {
+      "operation": "restore",
+      "source": "B",
+      "target": "C",
+      "cost": 1
+    },
+    {
+      "operation": "run"
+    }
+  ]
+}

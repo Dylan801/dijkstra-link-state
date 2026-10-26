@@ -1,0 +1,9 @@
+{
+  "name": "A : réseau stable",
+  "topology": "../data/topologie_exemple.json",
+  "actions": [
+    {
+      "operation": "run"
+    }
+  ]
+}

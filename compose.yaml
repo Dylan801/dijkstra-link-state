@@ -1,0 +1,26 @@
+name: dijkstra-link-state
+
+x-program: &program
+  image: dijkstra-link-state:local
+  build:
+    context: .
+  user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+  volumes:
+    - ./outputs:/app/outputs
+    - ./data:/app/data:ro
+    - ./scenarios:/app/scenarios:ro
+  stdin_open: true
+
+services:
+  v1:
+    <<: *program
+    command: ["dijkstra.v1"]
+  v2:
+    <<: *program
+    command: ["dijkstra.v2", "--topology", "data/topologie_exemple.json"]
+  v3:
+    <<: *program
+    command: ["dijkstra.v3", "--demo"]
+  tests:
+    <<: *program
+    command: ["unittest", "discover", "-s", "tests", "-v"]
