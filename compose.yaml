@@ -12,20 +12,20 @@ x-program: &program
   stdin_open: true
 
 services:
-  v1:
-    <<: *program
-    command: ["dijkstra.v1"]
-  v2:
-    <<: *program
-    command: ["dijkstra.v2", "--topology", "data/topologie_exemple.json"]
-  v3:
-    <<: *program
-    command: ["dijkstra.v3", "--demo"]
-  tests:
-    <<: *program
-    command: ["unittest", "discover", "-s", "tests", "-v"]
   v3-web:
     <<: *program
     command: ["dijkstra.v3", "--web", "--host", "0.0.0.0", "--port", "8080"]
     ports:
       - "127.0.0.1:${WEB_PORT:-8080}:8080"
+  v1:
+    <<: *program
+    profiles: ["cli"]
+    command: ["dijkstra.v1"]
+  v2:
+    <<: *program
+    profiles: ["cli"]
+    command: ["dijkstra.v2", "--topology", "data/topologie_exemple.json"]
+  v3:
+    <<: *program
+    profiles: ["cli"]
+    command: ["dijkstra.v3", "--demo"]

@@ -1,14 +1,11 @@
-.git
-.github
-.venv
-__pycache__
+# Seuls les fichiers nécessaires à l'exécution entrent dans l'image.
+*
+!Dockerfile
+!dijkstra/
+!dijkstra/**
+!data/
+!data/**
+!scenarios/
+!scenarios/**
 **/__pycache__
-*.py[cod]
-outputs
-docs
-README.md
-run.ps1
-.env
-.env.*
-*.log
-work
+**/*.py[cod]
