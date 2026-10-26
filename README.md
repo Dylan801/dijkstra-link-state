@@ -48,6 +48,15 @@ docker compose run --rm v2 dijkstra.v2 --update-link R1 R3 1 --command path --so
 La seconde affiche **R1 → R3, coût 1**.
 Ces commandes sont indépendantes de la simulation ouverte dans le navigateur.
 
+**Avant les tests web 3 à 5**, lancer le conteneur depuis le dossier du projet :
+
+```bash
+docker compose up --build v3-web
+```
+
+Ouvrir **http://localhost:8080** et garder ce terminal ouvert pendant les tests.
+Pour arrêter ce lancement au premier plan, appuyer sur **Ctrl+C** dans ce terminal.
+
 ### Test 3 — V3 web : apprendre la topologie
 
 Dans la page web :
